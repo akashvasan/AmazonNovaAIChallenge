@@ -44,10 +44,13 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins     = ["*"],   # Tighten this in production
-    allow_credentials = True,
-    allow_methods     = ["*"],
-    allow_headers     = ["*"],
+    allow_origins=[
+        "http://localhost:5173",                     # local dev (Vite default)
+        "novatravel.up.railway.app",     # deployed frontend
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
