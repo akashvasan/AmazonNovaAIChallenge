@@ -11,7 +11,7 @@ import requests
 from models.schemas import RestaurantOption, TripIntent, MealPeriod, UserPreferences
 
 # ── Mock flag ─────────────────────────────────────────────────────────────────
-USE_MOCK = True
+USE_MOCK = False
 
 # ── Yelp API ──────────────────────────────────────────────────────────────────
 YELP_API_KEY  = os.getenv("YELP_API_KEY", "")
@@ -143,40 +143,42 @@ def _apply_preference_filters(
 
 # ── Real Yelp search ──────────────────────────────────────────────────────────
 
-def _search_yelp(intent: TripIntent, meal_period: MealPeriod) -> list[RestaurantOption]:
-    prefs = intent.preferences
+def _search_google_places(intent: TripIntent, meal_period: MealPeriod) -> list[RestaurantOption]:
+    prefs  = intent.preferences
+    import os
+    key    = os.getenv("GOOGLE_PLACES_API_KEY", "")
+    url    = "https://maps.googleapis.com/maps/api/place/textsearch/json"
 
-    # Build exclusion terms from dietary restrictions
-    excluded = " ".join(f"-{d}" for d in prefs.disliked_cuisines)
-    term     = f"restaurants {excluded}".strip()
-
-    params = {
-        "location":   intent.destination,
-        "term":       term,
-        "categories": "restaurants",
-        "limit":      10,
-        "sort_by":    "rating",
-        "price":      "1,2,3",   # exclude $$$$ unless premium
+    meal_queries = {
+        MealPeriod.breakfast: f"breakfast cafe {intent.destination}",
+        MealPeriod.lunch:     f"lunch restaurant {intent.destination}",
+        MealPeriod.dinner:    f"dinner restaurant {intent.destination}",
     }
 
-    resp = requests.get(YELP_SEARCH_URL, headers=YELP_HEADERS, params=params)
+    params = {
+        "query": meal_queries.get(meal_period, f"restaurant {intent.destination}"),
+        "type":  "restaurant",
+        "key":   key,
+    }
+
+    resp = requests.get(url, params=params)
     resp.raise_for_status()
-    businesses = resp.json().get("businesses", [])
+    places = resp.json().get("results", [])[:5]
 
     results = []
-    for b in businesses:
-        price_str = b.get("price", "$")
-        cuisine   = b.get("categories", [{}])[0].get("title", "Restaurant")
+    for p in places:
+        price_level = p.get("price_level", 2)
+        price_map   = {1: "$", 2: "$$", 3: "$$$", 4: "$$$$"}
         results.append(RestaurantOption(
-            name         = b.get("name", ""),
-            cuisine      = cuisine,
-            address      = ", ".join(b.get("location", {}).get("display_address", [])),
-            rating       = float(b.get("rating", 4.0)),
-            price_range  = price_str,
+            name         = p.get("name", ""),
+            cuisine      = "Restaurant",
+            address      = p.get("formatted_address", ""),
+            rating       = float(p.get("rating", 4.0)),
+            price_range  = price_map.get(price_level, "$$"),
             meal_period  = meal_period,
             avg_cost_usd = None,
-            yelp_url     = b.get("url"),
-            image_url    = b.get("image_url"),
+            yelp_url     = f"https://maps.google.com/?q={p.get('name','').replace(' ', '+')}",
+            image_url    = None,
         ))
 
     return _apply_preference_filters(results, prefs)
@@ -196,9 +198,9 @@ async def run(intent: TripIntent) -> list[RestaurantOption]:
         else:
             # Search all 3 meal periods in parallel
             results = await asyncio.gather(
-                asyncio.to_thread(_search_yelp, intent, MealPeriod.breakfast),
-                asyncio.to_thread(_search_yelp, intent, MealPeriod.lunch),
-                asyncio.to_thread(_search_yelp, intent, MealPeriod.dinner),
+                asyncio.to_thread(_search_google_places, intent, MealPeriod.breakfast),
+                asyncio.to_thread(_search_google_places, intent, MealPeriod.lunch),
+                asyncio.to_thread(_search_google_places, intent, MealPeriod.dinner),
             )
             restaurants = [r for sublist in results for r in sublist]
     except Exception as e:

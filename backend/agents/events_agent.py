@@ -12,7 +12,7 @@ import requests
 from models.schemas import EventOption, FreePlace, TripIntent
 
 # ── Mock flag ─────────────────────────────────────────────────────────────────
-USE_MOCK = True
+USE_MOCK = False
 
 # ── API keys ──────────────────────────────────────────────────────────────────
 TICKETMASTER_API_KEY   = os.getenv("TICKETMASTER_API_KEY", "")
@@ -148,7 +148,7 @@ def _search_ticketmaster(intent: TripIntent) -> list[EventOption]:
             venue       = venue.get("name", ""),
             address     = venue.get("address", {}).get("line1", ""),
             price_usd   = float(price) if price else None,
-            is_free     = price is None,
+            is_free     = price is None and not e.get("url"),
             booking_url = e.get("url"),
             image_url   = e.get("images", [{}])[0].get("url"),
         ))
