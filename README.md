@@ -225,4 +225,4 @@ All agents default to `USE_MOCK = True` for local development without API keys. 
 - **Event:** Amazon Nova AI Hackathon
 - **Category:** Agentic AI (also eligible: Voice AI)
 - **Hashtag:** #AmazonNova
-- **Devpost:** https://devpost.com/your-submission-link
+- **Devpost:** [https://devpost.com/your-submission-link](https://devpost.com/software/nova-travel)
