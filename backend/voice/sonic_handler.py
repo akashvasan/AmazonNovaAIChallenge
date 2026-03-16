@@ -11,7 +11,7 @@ import boto3
 from botocore.exceptions import BotoCoreError, ClientError
 
 # ── Mock flag ─────────────────────────────────────────────────────────────────
-USE_MOCK = True
+USE_MOCK = false
 
 # ── Bedrock client ────────────────────────────────────────────────────────────
 

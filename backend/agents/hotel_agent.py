@@ -12,7 +12,7 @@ import requests
 from models.schemas import HotelOption, TripIntent
 
 # ── Mock flag ─────────────────────────────────────────────────────────────────
-USE_MOCK = True
+USE_MOCK = False
 
 # ── RapidAPI / Booking.com ────────────────────────────────────────────────────
 RAPIDAPI_KEY      = os.getenv("RAPIDAPI_KEY", "")
