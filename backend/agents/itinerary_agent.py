@@ -116,11 +116,11 @@ def _mock_itinerary_response(prompt: str) -> str:
     day_templates = [
         {
             "slots": [
-                {"time_of_day": "morning",   "activity_type": "meal",       "title": "Breakfast at Zak the Baker",           "description": "Start with fresh baked goods and coffee.",         "location": "295 NW 26th St, Miami",          "cost_usd": 14.0,  "booking_url": "https://yelp.com/zak-the-baker"},
+                {"time_of_day": "morning",   "activity_type": "meal",       "title": "Breakfast at Zak the Baker",           "description": "Start with fresh baked goods and coffee.",         "location": "295 NW 26th St, Miami",          "cost_usd": 14.0,  "booking_url": "https://maps.google.com/?q=zak-the-baker"},
                 {"time_of_day": "morning",   "activity_type": "free_place", "title": "South Beach walk",                     "description": "Iconic white sand and Art Deco architecture.",     "location": "Ocean Dr, Miami Beach",          "cost_usd": 0.0,   "booking_url": "https://maps.google.com/?q=South+Beach"},
-                {"time_of_day": "afternoon", "activity_type": "meal",       "title": "Lunch at Versailles Restaurant",        "description": "Classic Cuban food in Little Havana.",            "location": "3555 SW 8th St, Miami",          "cost_usd": 18.0,  "booking_url": "https://yelp.com/versailles-miami"},
+                {"time_of_day": "afternoon", "activity_type": "meal",       "title": "Lunch at Versailles Restaurant",        "description": "Classic Cuban food in Little Havana.",            "location": "3555 SW 8th St, Miami",          "cost_usd": 18.0,  "booking_url": "https://maps.google.com/?q=versailles-miami"},
                 {"time_of_day": "afternoon", "activity_type": "free_place", "title": "Wynwood Walls",                        "description": "World-famous outdoor street art museum.",          "location": "2516 NW 2nd Ave, Miami",         "cost_usd": 0.0,   "booking_url": "https://maps.google.com/?q=Wynwood+Walls"},
-                {"time_of_day": "evening",   "activity_type": "meal",       "title": "Dinner at KYU Miami",                  "description": "Wood-fired Asian fusion in Wynwood.",              "location": "251 NW 25th St, Miami",          "cost_usd": 55.0,  "booking_url": "https://yelp.com/kyu-miami"},
+                {"time_of_day": "evening",   "activity_type": "meal",       "title": "Dinner at KYU Miami",                  "description": "Wood-fired Asian fusion in Wynwood.",              "location": "251 NW 25th St, Miami",          "cost_usd": 55.0,  "booking_url": "https://maps.google.com/?q=kyu-miami"},
                 {"time_of_day": "evening",   "activity_type": "event",      "title": "Little Havana Food & Art Walk",        "description": "Evening cultural stroll along Calle Ocho.",       "location": "SW 8th St, Miami",               "cost_usd": 15.0,  "booking_url": "https://eventbrite.com/little-havana-walk"},
             ]
         },
@@ -128,17 +128,17 @@ def _mock_itinerary_response(prompt: str) -> str:
             "slots": [
                 {"time_of_day": "morning",   "activity_type": "meal",       "title": "Breakfast at hotel",                   "description": "Enjoy the hotel breakfast before a big day.",      "location": "Hotel",                          "cost_usd": 0.0,   "booking_url": None},
                 {"time_of_day": "morning",   "activity_type": "free_place", "title": "Everglades National Park",             "description": "UNESCO World Heritage site — bring bug spray.",   "location": "40001 State Road 9336, Homestead","cost_usd": 0.0,   "booking_url": "https://maps.google.com/?q=Everglades"},
-                {"time_of_day": "afternoon", "activity_type": "meal",       "title": "Lunch at Mandolin Aegean Bistro",      "description": "Fresh Greek and Mediterranean dishes.",           "location": "4312 NE 2nd Ave, Miami",         "cost_usd": 32.0,  "booking_url": "https://yelp.com/mandolin-miami"},
+                {"time_of_day": "afternoon", "activity_type": "meal",       "title": "Lunch at Mandolin Aegean Bistro",      "description": "Fresh Greek and Mediterranean dishes.",           "location": "4312 NE 2nd Ave, Miami",         "cost_usd": 32.0,  "booking_url": "https://maps.google.com/?q=mandolin-miami"},
                 {"time_of_day": "afternoon", "activity_type": "free_place", "title": "Bayside Marketplace",                 "description": "Waterfront shopping and free live music.",        "location": "401 Biscayne Blvd, Miami",       "cost_usd": 0.0,   "booking_url": "https://maps.google.com/?q=Bayside+Marketplace"},
-                {"time_of_day": "evening",   "activity_type": "meal",       "title": "Dinner at Cvi.che 105",               "description": "Peruvian ceviches and cocktails downtown.",        "location": "105 NE 3rd Ave, Miami",          "cost_usd": 40.0,  "booking_url": "https://yelp.com/cvi-che-105"},
+                {"time_of_day": "evening",   "activity_type": "meal",       "title": "Dinner at Cvi.che 105",               "description": "Peruvian ceviches and cocktails downtown.",        "location": "105 NE 3rd Ave, Miami",          "cost_usd": 40.0,  "booking_url": "https://maps.google.com/?q=cvi-che-105"},
                 {"time_of_day": "evening",   "activity_type": "event",      "title": "Ultra Music Festival",                "description": "World-class DJ sets at Bayfront Park.",            "location": "Bayfront Park, Miami",           "cost_usd": 125.0, "booking_url": "https://ticketmaster.com/ultra-music-festival"},
             ]
         },
         {
             "slots": [
-                {"time_of_day": "morning",   "activity_type": "meal",       "title": "Breakfast at Zak the Baker",           "description": "Light breakfast before checkout.",                 "location": "295 NW 26th St, Miami",          "cost_usd": 14.0,  "booking_url": "https://yelp.com/zak-the-baker"},
+                {"time_of_day": "morning",   "activity_type": "meal",       "title": "Breakfast at Zak the Baker",           "description": "Light breakfast before checkout.",                 "location": "295 NW 26th St, Miami",          "cost_usd": 14.0,  "booking_url": "https://maps.google.com/?q=zak-the-baker"},
                 {"time_of_day": "morning",   "activity_type": "event",      "title": "Miami Heat vs Bulls",                  "description": "Catch a live NBA game at Kaseya Center.",          "location": "601 Biscayne Blvd, Miami",       "cost_usd": 85.0,  "booking_url": "https://ticketmaster.com/heat-vs-bulls"},
-                {"time_of_day": "afternoon", "activity_type": "meal",       "title": "Lunch at Versailles Restaurant",       "description": "One last Cuban meal before heading home.",        "location": "3555 SW 8th St, Miami",          "cost_usd": 18.0,  "booking_url": "https://yelp.com/versailles-miami"},
+                {"time_of_day": "afternoon", "activity_type": "meal",       "title": "Lunch at Versailles Restaurant",       "description": "One last Cuban meal before heading home.",        "location": "3555 SW 8th St, Miami",          "cost_usd": 18.0,  "booking_url": "https://maps.google.com/?q=versailles-miami"},
                 {"time_of_day": "afternoon", "activity_type": "free_place", "title": "South Beach one last time",            "description": "Soak up the sun before your flight home.",         "location": "Ocean Dr, Miami Beach",          "cost_usd": 0.0,   "booking_url": "https://maps.google.com/?q=South+Beach"},
                 {"time_of_day": "evening",   "activity_type": "travel",     "title": "Head to Miami International Airport", "description": "Allow 90 min before departure.",                  "location": "MIA Airport",                    "cost_usd": 0.0,   "booking_url": None},
                 {"time_of_day": "evening",   "activity_type": "meal",       "title": "Dinner at airport",                   "description": "Grab a bite before your flight.",                  "location": "MIA Airport",                    "cost_usd": 20.0,  "booking_url": None},
@@ -150,7 +150,7 @@ def _mock_itinerary_response(prompt: str) -> str:
     if is_premium:
         day_templates[0]["slots"][4]["title"]    = "Dinner at Joe's Stone Crab"
         day_templates[0]["slots"][4]["cost_usd"] = 85.0
-        day_templates[0]["slots"][4]["yelp_url"] = "https://yelp.com/joes-stone-crab"
+        day_templates[0]["slots"][4]["yelp_url"] = "https://maps.google.com/?q=joes-stone-crab"
 
     for i, template in enumerate(day_templates):
         date = (base_date + timedelta(days=i)).strftime("%Y-%m-%d")
