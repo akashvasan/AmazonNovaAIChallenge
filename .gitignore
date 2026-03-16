@@ -8,6 +8,7 @@ __pycache__/
 .env
 venv/
 .venv/
+backend/.env
 
 # Node
 node_modules/
