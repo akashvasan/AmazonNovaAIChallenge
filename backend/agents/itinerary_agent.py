@@ -208,7 +208,7 @@ def _voice_summary(itinerary: Itinerary) -> str:
     """Short string for Nova 2 Sonic to read aloud."""
     nights = len(itinerary.days)
     return (
-        f"Here's your {itinerary.tier.value} {itinerary.hotel.address.split(',')[-2].strip()} trip! "
+        f"Here's your {itinerary.tier.value} {itinerary.flight.destination} trip! "
         f"You're flying {itinerary.flight.airline} on {itinerary.flight.departure_time[:10]}, "
         f"staying at {itinerary.hotel.name} for {nights} nights. "
         f"Estimated total: ${itinerary.estimated_total_usd:,.0f}. "

@@ -16,10 +16,10 @@ USE_MOCK = False
 
 # ── RapidAPI / Booking.com ────────────────────────────────────────────────────
 RAPIDAPI_KEY      = os.getenv("RAPIDAPI_KEY", "")
-BOOKING_SEARCH_URL = "https://booking-com.p.rapidapi.com/v1/hotels/search"
+BOOKING_SEARCH_URL = "https://booking-com18.p.rapidapi.com/web/stays/search"
 BOOKING_HEADERS   = {
     "X-RapidAPI-Key":  RAPIDAPI_KEY,
-    "X-RapidAPI-Host": "booking-com.p.rapidapi.com",
+    "X-RapidAPI-Host": "booking-com18.p.rapidapi.com",
 }
 
 # Booking.com destination IDs for common cities (expand as needed)
@@ -84,39 +84,41 @@ def _mock_hotels(intent: TripIntent) -> list[HotelOption]:
 # ── Real Booking.com search ───────────────────────────────────────────────────
 
 def _search_hotels(intent: TripIntent) -> list[HotelOption]:
-    dest    = intent.destination.lower()
-    dest_id = DEST_IDS.get(dest, "-1217898")  # default Miami
-    nights  = intent.duration_days or 3
+    import os
+    key    = os.getenv("GOOGLE_PLACES_API_KEY", "")
+    url    = "https://maps.googleapis.com/maps/api/place/textsearch/json"
+    nights = intent.duration_days or 3
 
     params = {
-        "dest_id":       dest_id,
-        "dest_type":     "city",
-        "checkin_date":  intent.departure_date,
-        "checkout_date": intent.return_date or intent.departure_date,
-        "adults_number": intent.num_travelers,
-        "room_number":   1,
-        "order_by":      "price",
-        "filter_by_currency": "USD",
-        "units":         "metric",
-        "locale":        "en-us",
+        "query": f"hotels in {intent.destination}",
+        "type":  "lodging",
+        "key":   key,
     }
 
-    resp = requests.get(BOOKING_SEARCH_URL, headers=BOOKING_HEADERS, params=params)
+    resp = requests.get(url, params=params)
     resp.raise_for_status()
-    results = resp.json().get("result", [])
+    places = resp.json().get("results", [])[:5]
+
+    price_map = {1: 80, 2: 150, 3: 250, 4: 400}
 
     hotels = []
-    for h in results[:5]:
-        price_per_night = float(h.get("min_total_price", 0)) / max(nights, 1)
+    for p in places:
+        if not p:
+            continue
+        price_level     = p.get("price_level") or 2
+        price_per_night = float(price_map.get(price_level, 150))
+        name            = p.get("name") or "Unknown Hotel"
+        address         = p.get("formatted_address") or ""
+        rating          = float(p.get("rating") or 3.5)
         hotels.append(HotelOption(
-            name                = h.get("hotel_name", "Unknown Hotel"),
-            address             = h.get("address", ""),
-            star_rating         = float(h.get("class", 3)),
-            price_per_night_usd = round(price_per_night, 2),
-            total_price_usd     = float(h.get("min_total_price", 0)),
+            name                = name,
+            address             = address,
+            star_rating         = min(rating, 5.0),
+            price_per_night_usd = price_per_night,
+            total_price_usd     = round(price_per_night * nights, 2),
             amenities           = [],
-            image_url           = h.get("max_photo_url"),
-            booking_url         = h.get("url", "https://booking.com"),
+            image_url           = None,
+            booking_url         = f"https://www.google.com/maps/search/?api=1&query={name.replace(' ', '+')}+{intent.destination}",
         ))
     return hotels
 
